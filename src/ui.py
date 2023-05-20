@@ -18,7 +18,7 @@ def reset_results(*args):
 
 def sidebar():
     with st.sidebar:
-        image = Image.open('utils/img/spotify.gif')
+        image = Image.open('src/img/spotify.gif')
         st.markdown(
             "## How to use\n"
             "1. Connect Spotify Account using the `Spotify OAuth` button\n"

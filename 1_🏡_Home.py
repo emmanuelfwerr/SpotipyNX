@@ -3,7 +3,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import streamlit as st
 from dotenv import load_dotenv
-from utils.ui import *
+from src.ui import *
 
 # load .env file
 load_dotenv()
@@ -15,7 +15,7 @@ st.set_page_config(
 add_logo()
 sidebar()
 
-st.image("utils/img/spotify_banner.jpeg")
+st.image("src/img/home_banner_v2.jpeg")
 
 button_spotify_oauth = st.button("Spotify OAuth")
 
