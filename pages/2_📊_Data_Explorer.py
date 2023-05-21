@@ -5,6 +5,6 @@ import streamlit as st
 st.set_page_config(
     page_title="Spotify WebApp Mini Demo", page_icon="💥", layout="wide"
 )
-st.image("src/img/spotify_banner.jpeg")
+st.image("src/img/home_banner.png")
 
 st.write("page 2 explorer")

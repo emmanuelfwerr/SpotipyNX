@@ -1,3 +1,4 @@
+import base64
 import streamlit as st
 from PIL import Image
 
@@ -38,10 +39,17 @@ def sidebar():
             "For more on how this was built, instructions to run locally and to contribute: [visit GitHub](https://github.com/)"
         )
         st.markdown("---")
-        st.image(image, width=250)
 
 
 def add_logo():
+    '''@st.cache_data
+    def get_image_as_base_64(file):
+        with open(file, "rb") as f:
+            data = f.read()
+        return base64.b64encode(data).decode()
+    
+    img = get_image_as_base_64('./src/img/spotify_logo.png')'''
+
     st.markdown(
         """
         <style>
@@ -49,10 +57,9 @@ def add_logo():
                 content: "SpotipyNX";
                 margin-left: 20px;
                 margin-top: 20px;
-                margin-bottom: 20px;
                 font-size: 30px;
                 position: relative;
-                top: 100px;
+                top: 69px;
             }
         </style>
         """,

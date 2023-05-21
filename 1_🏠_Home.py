@@ -15,7 +15,7 @@ st.set_page_config(
 add_logo()
 sidebar()
 
-st.image("src/img/home_banner_v2.jpeg")
+st.image("src/img/home_banner_v4.jpeg")
 
 button_spotify_oauth = st.button("Spotify OAuth")
 
@@ -43,7 +43,6 @@ if button_spotify_oauth:
 
     except Exception as e:
         print(e)
-
 
 # ---*--- Streamlit WebApp Footer ---*---
 
