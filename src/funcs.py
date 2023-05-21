@@ -1,8 +1,10 @@
 import pandas as pd
 import numpy as np
+import streamlit as st
 
 
-def fetch_liked_tracks_DF(spotify: object, n: int) -> pd.DataFrame():
+@st.cache_data
+def parse_liked_tracks_DF(liked_tracks_results: object, n: int=10) -> pd.DataFrame():
     """
     Fetch a user's saved songs using the spotify client.
 
@@ -12,7 +14,6 @@ def fetch_liked_tracks_DF(spotify: object, n: int) -> pd.DataFrame():
     Returns:
         liked_tracks_DF: A Pandas DataFrame with tracks and their metadata
     """
-    liked_tracks_results = spotify.current_user_saved_tracks()
     liked_tracks = liked_tracks_results['items']
 
     # ---*--- Liked Songs <3 ---*---
@@ -71,7 +72,8 @@ def fetch_liked_tracks_DF(spotify: object, n: int) -> pd.DataFrame():
     return liked_songs_df
 
 
-def fetch_top_tracks_DF(spotify: object, n: int) -> pd.DataFrame():
+@st.cache_data
+def parse_top_tracks_DF(spotify: object, n: int=10) -> pd.DataFrame():
     """
     Fetch a user's top songs using the spotify client.
 

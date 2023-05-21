@@ -23,7 +23,7 @@ def sidebar():
         st.markdown(
             "## How to use\n"
             "1. Connect Spotify Account using the `Spotify OAuth` button\n"
-            "2. Browse the app while we process your data\n"
+            "2. Wait briefly while we process your data...\n"
             "3. Enjoy 🤗\n"
         )
 
@@ -31,7 +31,7 @@ def sidebar():
         st.markdown(
             "## How this works\n"
             "This app was built with [Streamlit](https://streamlit.io) using the"
-            " [Spotify Web API](https://developer.spotify.com/documentation/web-api) and ... "
+            " [Spotify Web API](https://developer.spotify.com/documentation/web-api) and is hosted on [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/)"
         )
         st.markdown("---")
         st.markdown("**Take results with a grain of** 🧂\n\n"

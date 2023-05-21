@@ -7,4 +7,4 @@ st.set_page_config(
 )
 st.image("src/img/home_banner.png")
 
-st.write("page 3 collaborate")
+st.write("page 4 collaborate")
