@@ -47,10 +47,11 @@ def sendEmail(message, subject):
     try:
         sns = boto3.client('sns')
         sns.publish(
-            TopicArn='arn:aws:sns:us-east-1:619628291786:spotify-send-email:5855775a-d7f2-4761-acf6-7a90ab9e904b',
+            TargetArn='arn:aws:sns:us-east-1:619628291786:spotify-send-email',#:5855775a-d7f2-4761-acf6-7a90ab9e904b',
             Message=message,
             Subject=subject
         )
+        print("email sent!")
     except Exception as e:
         print(e)
 
@@ -58,7 +59,8 @@ def sendEmail(message, subject):
 if __name__ == "__main__":
     file_path = '.gitignore' # test file
     new_name = 'test.txt'
-    uploadS3(file_path, new_name)
+    s3_result = uploadS3(file_path, new_name)
+    sendEmail(s3_result, 'New file in the bucket!')
 
 
 
