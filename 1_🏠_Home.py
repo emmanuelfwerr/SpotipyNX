@@ -6,6 +6,7 @@ import streamlit as st
 from dotenv import load_dotenv
 from src.ui import *
 from src.funcs import *
+from src.s3 import *
 
 # load .env file
 load_dotenv()
@@ -37,6 +38,9 @@ if button_spotify_oauth:
         saved_tracks = saved_tracks_results['items']
 
         st.success('Successful Spotify Authentication!', icon="✅")
+
+        test_s3 = uploadS3('.gitignore', f'test_{str(time.time())}.txt')
+        print(test_s3)
 
         # ---*--- Fetch Songs Data ---*---
         @st.cache_data
