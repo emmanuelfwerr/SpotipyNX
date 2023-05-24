@@ -1,11 +1,6 @@
 import boto3
 from dotenv import load_dotenv
 
-# maybe useful for later - REMOVE
-#import time
-#import random
-#import string
-
 # bucket_region = 'us-east-1' # not used by now
 
 # need this to test the uploadS3() itself,
@@ -14,6 +9,7 @@ load_dotenv()
 
 """
 this function reads a file and uploads it to a S3 bucket
+it also returns a link to publicly see the files for 1h
 """
 def uploadS3(file_path, new_name, bucket_name='spotify-output'):
     # upload to S3 bucket:
@@ -55,12 +51,23 @@ def sendEmail(message, subject):
     except Exception as e:
         print(e)
 
+"""
+this dude prepares an email with the file link, and this email will be resend to the final user
+requirement: email_subject can't contain ";"
+"""
+def sendEmail2(file_url, email_address, email_subject):
+    sendEmail(
+        message= "#"*10 + file_url + "#"* 10, # sign # to be able to split the url outside the rest of the message
+        subject= f"SpotipyNX notifications;{email_address};{email_subject}" # {file_url}
+    )
 
+
+"""
 if __name__ == "__main__":
     file_path = '.gitignore' # test file
-    new_name = 'test.txt'
+    new_name = 'test66.txt'
     s3_result = uploadS3(file_path, new_name)
-    sendEmail(s3_result, 'New file in the bucket!')
-
+    sendEmail2(s3_result, 'ccc@gmail.com', "hola")
+"""
 
 
