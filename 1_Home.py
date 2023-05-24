@@ -32,10 +32,7 @@ if "top_songs_df" not in st.session_state:
 if button_spotify_oauth:
     try:
         scope = ["user-library-read", "user-top-read", "user-read-recently-played"]
-        spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
-
-        saved_tracks_results = spotify.current_user_saved_tracks()
-        saved_tracks = saved_tracks_results['items']
+        st.session_state.spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
         st.success('Successful Spotify Authentication!', icon="✅")
 
@@ -84,7 +81,7 @@ if button_spotify_oauth:
                 liked_songs_df.loc[track_uri, "track_release_date"] = track["album"]["release_date"]
                 liked_songs_df.loc[track_uri, "track_popularity"] = track["popularity"]
 
-                audio_features = spotify.audio_features([track_uri])[0] #function requires a list
+                audio_features = st.session_state.spotify.audio_features([track_uri])[0] #function requires a list
 
                 liked_songs_df.loc[track_uri, "af_danceability"] = audio_features["danceability"]
                 liked_songs_df.loc[track_uri, "af_energy"] = audio_features["energy"]
@@ -103,7 +100,7 @@ if button_spotify_oauth:
 
                 main_artist_uri = track["artists"][0]["uri"]
                 liked_songs_df.loc[track_uri, "main_artist_uri"] = main_artist_uri
-                main_artist = spotify.artist(main_artist_uri)
+                main_artist = st.session_state.spotify.artist(main_artist_uri)
                 liked_songs_df.loc[track_uri, "main_artist_name"] = main_artist["name"]
                 liked_songs_df.loc[track_uri, "main_artist_followers"] = main_artist["followers"]["total"]
                 liked_songs_df.loc[track_uri, "main_artist_genres"] = main_artist["genres"]
@@ -152,7 +149,7 @@ if button_spotify_oauth:
                 top_songs_df.loc[track_uri, "track_release_date"] = track["album"]["release_date"]
                 top_songs_df.loc[track_uri, "track_popularity"] = track["popularity"]
 
-                audio_features = spotify.audio_features([track_uri])[0] #function requires a list
+                audio_features = st.session_state.spotify.audio_features([track_uri])[0] #function requires a list
 
                 top_songs_df.loc[track_uri, "af_danceability"] = audio_features["danceability"]
                 top_songs_df.loc[track_uri, "af_energy"] = audio_features["energy"]
@@ -171,7 +168,7 @@ if button_spotify_oauth:
 
                 main_artist_uri = track["artists"][0]["uri"]
                 top_songs_df.loc[track_uri, "main_artist_uri"] = main_artist_uri
-                main_artist = spotify.artist(main_artist_uri)
+                main_artist = st.session_state.spotify.artist(main_artist_uri)
                 top_songs_df.loc[track_uri, "main_artist_name"] = main_artist["name"]
                 top_songs_df.loc[track_uri, "main_artist_followers"] = main_artist["followers"]["total"]
                 top_songs_df.loc[track_uri, "main_artist_genres"] = main_artist["genres"]
@@ -179,8 +176,8 @@ if button_spotify_oauth:
 
             return top_songs_df
 
-        liked_tracks_results = spotify.current_user_saved_tracks()
-        top_tracks_results = spotify.current_user_top_tracks()
+        liked_tracks_results = st.session_state.spotify.current_user_saved_tracks()
+        top_tracks_results = st.session_state.spotify.current_user_top_tracks()
 
         st.session_state.liked_songs_df = parse_liked_tracks_DF(liked_tracks_results)
         st.session_state.top_songs_df = parse_top_tracks_DF(top_tracks_results)
@@ -192,16 +189,16 @@ if button_spotify_oauth:
     except Exception as e:
         print(e)
 
-col1, col2, col3 = st.columns(3)
-with col1:
+col1, col2, col3, col4, col5 = st.columns(5)
+with col2:
    st.markdown("<h3 style='text-align: center; color: white;'>Explore Stats</h3>", unsafe_allow_html=True)
    st.image("./src/img/explorer_feature.jpeg")
 
-with col2:
+with col3:
    st.markdown("<h3 style='text-align: center; color: white;'>Generate Networks</h3>", unsafe_allow_html=True)
    st.image("./src/img/graph_feature.png")
 
-with col3:
+with col4:
    st.markdown("<h3 style='text-align: center; color: white;'>Something Extra</h3>", unsafe_allow_html=True)
    st.image("./src/img/spotify_logo.png")
 
