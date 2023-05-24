@@ -9,4 +9,12 @@ st.set_page_config(
 add_logo()
 sidebar()
 
-st.write("page 4 collaborate")
+st.write("page 5 feedback")
+
+
+# ---*--- Streamlit WebApp Footer ---*---
+st.markdown("---")
+st.write(
+    "Share on social media with the hashtag [#ccbda2023spotipyNX](https://twitter.com/) !"
+)
+    

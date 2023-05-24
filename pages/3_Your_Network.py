@@ -13,9 +13,9 @@ st.set_page_config(
 add_logo()
 sidebar()
 
-network_start = st.button('press me')
+generate_network = st.button('Build Your Music Network')
 
-if network_start:
+if generate_network:
     try:
         top_tracks_results = st.session_state.spotify.current_user_top_tracks(
             limit=169, offset=0, time_range='medium_term'
@@ -90,8 +90,7 @@ if network_start:
 
 
 # ---*--- Streamlit WebApp Footer ---*---
-
 st.markdown("---")
 st.write(
-    "Share on social media with the hashtag [#ccbda2023spotify](https://twitter.com/) !"
+    "Share on social media with the hashtag [#ccbda2023spotipyNX](https://twitter.com/) !"
 )
