@@ -8,7 +8,7 @@ venv
 .cache
 
 # pycharm
-#.idea
+.idea
 
 # network html
 music_net.html
