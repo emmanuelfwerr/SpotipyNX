@@ -18,7 +18,7 @@ network_start = st.button('press me')
 if network_start:
     try:
         top_tracks_results = st.session_state.spotify.current_user_top_tracks(
-            limit=50, offset=0, time_range='medium_term'
+            limit=169, offset=0, time_range='medium_term'
         )
 
         tracks = []

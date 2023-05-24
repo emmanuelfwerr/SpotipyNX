@@ -6,3 +6,9 @@ venv
 
 # sessione cache
 .cache
+
+# pycharm
+#.idea
+
+# network html
+music_net.html
