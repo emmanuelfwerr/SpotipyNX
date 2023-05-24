@@ -6,12 +6,6 @@ from src.ui import *
 from src.funcs import *
 from src.s3 import *
 
-'''# clean-up
-try:
-    os.remove(".cache")
-except Exception as e:
-    print(e)'''
-
 # load .env file
 load_dotenv()
 
