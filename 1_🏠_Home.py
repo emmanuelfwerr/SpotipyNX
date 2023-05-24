@@ -40,7 +40,7 @@ if button_spotify_oauth:
         st.success('Successful Spotify Authentication!', icon="✅")
 
         #test_s3 = uploadS3('.gitignore', f'test_{str(time.time())}.txt')
-        #sendEmail(test_s3, 'New file in the bucket!')
+        #sendEmail2(test_s3, 'adriamedina@outlook.es' ,'New file in the bucket!')
 
         # ---*--- Fetch Songs Data ---*---
         @st.cache_data
