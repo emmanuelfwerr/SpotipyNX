@@ -3,8 +3,15 @@ import numpy as np
 import streamlit as st
 
 
+# ---*--- Enable DataFrame Downloads ---*---
 @st.cache_data
-def parse_liked_tracks_DF(liked_tracks_results: object, n: int=10) -> pd.DataFrame():
+def convert_df(df):
+   return df.to_csv(index=False).encode('utf-8')
+
+
+# ---*--- Fetch Songs Data ---*---
+@st.cache_data
+def parse_liked_tracks_DF(liked_tracks_results: object, n: int=20) -> pd.DataFrame():
     """
     Fetch a user's saved songs using the spotify client.
 
@@ -23,11 +30,11 @@ def parse_liked_tracks_DF(liked_tracks_results: object, n: int=10) -> pd.DataFra
         columns=[
             "track_name", "added_date",
             "track_release_date", "track_popularity",
-            "af_danceability", "af_energy", "af_key",
-            "af_loudness", "af_mode", "af_speechiness",
-            "af_acousticness", "af_instrumentalness",
-            "af_liveness", "af_valence", "af_tempo", "af_type",
-            "af_duration", "af_time_signature", "main_artist_uri",
+            "danceability", "energy", "key",
+            "loudness", "mode", "speechiness",
+            "acousticness", "instrumentalness",
+            "liveness", "valence", "tempo", "type",
+            "duration", "time_signature", "main_artist_uri",
             "main_artist_name", "main_artist_followers",
             "main_artist_genres", "main_artist_popularity"
         ]
@@ -44,26 +51,26 @@ def parse_liked_tracks_DF(liked_tracks_results: object, n: int=10) -> pd.DataFra
         liked_songs_df.loc[track_uri, "track_release_date"] = track["album"]["release_date"]
         liked_songs_df.loc[track_uri, "track_popularity"] = track["popularity"]
 
-        audio_features = spotify.audio_features([track_uri])[0] #function requires a list
+        audio_features = st.session_state.spotify.audio_features([track_uri])[0] #function requires a list
 
-        liked_songs_df.loc[track_uri, "af_danceability"] = audio_features["danceability"]
-        liked_songs_df.loc[track_uri, "af_energy"] = audio_features["energy"]
-        liked_songs_df.loc[track_uri, "af_key"] = audio_features["key"]
-        liked_songs_df.loc[track_uri, "af_loudness"] = audio_features["loudness"]
-        liked_songs_df.loc[track_uri, "af_mode"] = audio_features["mode"]
-        liked_songs_df.loc[track_uri, "af_speechiness"] = audio_features["speechiness"]
-        liked_songs_df.loc[track_uri, "af_acousticness"] = audio_features["acousticness"]
-        liked_songs_df.loc[track_uri, "af_instrumentalness"] = audio_features["instrumentalness"]
-        liked_songs_df.loc[track_uri, "af_liveness"] = audio_features["liveness"]
-        liked_songs_df.loc[track_uri, "af_valence"] = audio_features["valence"]
-        liked_songs_df.loc[track_uri, "af_tempo"] = audio_features["tempo"]
-        liked_songs_df.loc[track_uri, "af_type"] = audio_features["type"]
-        liked_songs_df.loc[track_uri, "af_duration"] = audio_features["duration_ms"]
-        liked_songs_df.loc[track_uri, "af_time_signature"] = audio_features["time_signature"]
+        liked_songs_df.loc[track_uri, "danceability"] = audio_features["danceability"]
+        liked_songs_df.loc[track_uri, "energy"] = audio_features["energy"]
+        liked_songs_df.loc[track_uri, "key"] = audio_features["key"]
+        liked_songs_df.loc[track_uri, "loudness"] = audio_features["loudness"]
+        liked_songs_df.loc[track_uri, "mode"] = audio_features["mode"]
+        liked_songs_df.loc[track_uri, "speechiness"] = audio_features["speechiness"]
+        liked_songs_df.loc[track_uri, "acousticness"] = audio_features["acousticness"]
+        liked_songs_df.loc[track_uri, "instrumentalness"] = audio_features["instrumentalness"]
+        liked_songs_df.loc[track_uri, "liveness"] = audio_features["liveness"]
+        liked_songs_df.loc[track_uri, "valence"] = audio_features["valence"]
+        liked_songs_df.loc[track_uri, "tempo"] = audio_features["tempo"]
+        liked_songs_df.loc[track_uri, "type"] = audio_features["type"]
+        liked_songs_df.loc[track_uri, "duration"] = audio_features["duration_ms"]
+        liked_songs_df.loc[track_uri, "time_signature"] = audio_features["time_signature"]
 
         main_artist_uri = track["artists"][0]["uri"]
         liked_songs_df.loc[track_uri, "main_artist_uri"] = main_artist_uri
-        main_artist = spotify.artist(main_artist_uri)
+        main_artist = st.session_state.spotify.artist(main_artist_uri)
         liked_songs_df.loc[track_uri, "main_artist_name"] = main_artist["name"]
         liked_songs_df.loc[track_uri, "main_artist_followers"] = main_artist["followers"]["total"]
         liked_songs_df.loc[track_uri, "main_artist_genres"] = main_artist["genres"]
@@ -73,7 +80,7 @@ def parse_liked_tracks_DF(liked_tracks_results: object, n: int=10) -> pd.DataFra
 
 
 @st.cache_data
-def parse_top_tracks_DF(spotify: object, n: int=10) -> pd.DataFrame():
+def parse_top_tracks_DF(top_tracks_results: object, n: int=20) -> pd.DataFrame():
     """
     Fetch a user's top songs using the spotify client.
 
@@ -83,7 +90,6 @@ def parse_top_tracks_DF(spotify: object, n: int=10) -> pd.DataFrame():
     Returns:
         top_tracks_DF: A Pandas DataFrame with tracks and their metadata
     """
-    top_tracks_results = spotify.current_user_top_tracks()
     top_tracks = top_tracks_results['items']
 
     # ---*--- Top Songs ^ ---*---
@@ -93,11 +99,11 @@ def parse_top_tracks_DF(spotify: object, n: int=10) -> pd.DataFrame():
         columns=[
             "track_name",
             "track_release_date", "track_popularity",
-            "af_danceability", "af_energy", "af_key",
-            "af_loudness", "af_mode", "af_speechiness",
-            "af_acousticness", "af_instrumentalness",
-            "af_liveness", "af_valence", "af_tempo", "af_type",
-            "af_duration", "af_time_signature", "main_artist_uri",
+            "danceability", "energy", "key",
+            "loudness", "mode", "speechiness",
+            "acousticness", "instrumentalness",
+            "liveness", "valence", "tempo", "type",
+            "duration", "time_signature", "main_artist_uri",
             "main_artist_name", "main_artist_followers",
             "main_artist_genres", "main_artist_popularity"
         ]
@@ -113,54 +119,29 @@ def parse_top_tracks_DF(spotify: object, n: int=10) -> pd.DataFrame():
         top_songs_df.loc[track_uri, "track_release_date"] = track["album"]["release_date"]
         top_songs_df.loc[track_uri, "track_popularity"] = track["popularity"]
 
-        audio_features = spotify.audio_features([track_uri])[0] #function requires a list
+        audio_features = st.session_state.spotify.audio_features([track_uri])[0] #function requires a list
 
-        top_songs_df.loc[track_uri, "af_danceability"] = audio_features["danceability"]
-        top_songs_df.loc[track_uri, "af_energy"] = audio_features["energy"]
-        top_songs_df.loc[track_uri, "af_key"] = audio_features["key"]
-        top_songs_df.loc[track_uri, "af_loudness"] = audio_features["loudness"]
-        top_songs_df.loc[track_uri, "af_mode"] = audio_features["mode"]
-        top_songs_df.loc[track_uri, "af_speechiness"] = audio_features["speechiness"]
-        top_songs_df.loc[track_uri, "af_acousticness"] = audio_features["acousticness"]
-        top_songs_df.loc[track_uri, "af_instrumentalness"] = audio_features["instrumentalness"]
-        top_songs_df.loc[track_uri, "af_liveness"] = audio_features["liveness"]
-        top_songs_df.loc[track_uri, "af_valence"] = audio_features["valence"]
-        top_songs_df.loc[track_uri, "af_tempo"] = audio_features["tempo"]
-        top_songs_df.loc[track_uri, "af_type"] = audio_features["type"]
-        top_songs_df.loc[track_uri, "af_duration"] = audio_features["duration_ms"]
-        top_songs_df.loc[track_uri, "af_time_signature"] = audio_features["time_signature"]
+        top_songs_df.loc[track_uri, "danceability"] = audio_features["danceability"]
+        top_songs_df.loc[track_uri, "energy"] = audio_features["energy"]
+        top_songs_df.loc[track_uri, "key"] = audio_features["key"]
+        top_songs_df.loc[track_uri, "loudness"] = audio_features["loudness"]
+        top_songs_df.loc[track_uri, "mode"] = audio_features["mode"]
+        top_songs_df.loc[track_uri, "speechiness"] = audio_features["speechiness"]
+        top_songs_df.loc[track_uri, "acousticness"] = audio_features["acousticness"]
+        top_songs_df.loc[track_uri, "instrumentalness"] = audio_features["instrumentalness"]
+        top_songs_df.loc[track_uri, "liveness"] = audio_features["liveness"]
+        top_songs_df.loc[track_uri, "valence"] = audio_features["valence"]
+        top_songs_df.loc[track_uri, "tempo"] = audio_features["tempo"]
+        top_songs_df.loc[track_uri, "type"] = audio_features["type"]
+        top_songs_df.loc[track_uri, "duration"] = audio_features["duration_ms"]
+        top_songs_df.loc[track_uri, "time_signature"] = audio_features["time_signature"]
 
         main_artist_uri = track["artists"][0]["uri"]
         top_songs_df.loc[track_uri, "main_artist_uri"] = main_artist_uri
-        main_artist = spotify.artist(main_artist_uri)
+        main_artist = st.session_state.spotify.artist(main_artist_uri)
         top_songs_df.loc[track_uri, "main_artist_name"] = main_artist["name"]
         top_songs_df.loc[track_uri, "main_artist_followers"] = main_artist["followers"]["total"]
         top_songs_df.loc[track_uri, "main_artist_genres"] = main_artist["genres"]
         top_songs_df.loc[track_uri, "main_artist_popularity"] = main_artist["popularity"]
 
     return top_songs_df
-
-
-def fetch_top_artists_DF(spotify: object, n: int) -> pd.DataFrame():
-    """
-    Fetch a user's top artists using the spotify client.
-
-    Args:
-        spotify: A Spotipy object used to interact with the Spotify API
-
-    Returns:
-        top_artists_DF: A Pandas DataFrame with artists and their metadata
-    """
-    top_artists_results = spotify.current_user_top_artists()
-    top_artists = top_artists_results['items']
-
-    # ---*--- Top Artists ^ ---*---
-
-    
-
-    return ...
-
-
-def print_sample_output():
-
-    return ...
