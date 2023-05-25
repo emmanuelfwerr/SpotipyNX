@@ -87,8 +87,8 @@ if st.session_state.keep_graphics:
                              title="Artist - " + artist_name)
                 net.add_edge(album_id, artist_id)
 
-        net.show("music_net.html")
-        net.show_buttons(filter_=['physics'])
+        #net.show("music_net.html")
+        #net.show_buttons(filter_=['physics'])
 
         HtmlFile = open("music_net.html", 'r', encoding='utf-8')
         source_code = HtmlFile.read()
