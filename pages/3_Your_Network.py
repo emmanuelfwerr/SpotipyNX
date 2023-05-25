@@ -4,6 +4,10 @@ import streamlit as st
 from dotenv import load_dotenv
 from pyvis.network import Network
 from src.ui import *
+from src.s3 import *
+import time
+import string
+import random
 
 
 # ---*--- Streamlit WebApp Header ---*---
@@ -13,9 +17,15 @@ st.set_page_config(
 add_logo()
 sidebar()
 
+if not "keep_graphics" in st.session_state:
+    st.session_state.keep_graphics = False
+
 generate_network = st.button('Build Your Music Network')
 
 if generate_network:
+    st.session_state.keep_graphics = True # este hack esta bastante chetao para que no refresque toda
+
+if st.session_state.keep_graphics:
     try:
         top_tracks_results = st.session_state.spotify.current_user_top_tracks(
             limit=169, offset=0, time_range='medium_term'
@@ -54,7 +64,6 @@ if generate_network:
     except Exception as e:
         print(e)
 
-
     try:
         net = Network(height="1000px", width="1600px", font_color="black")
         net.barnes_hut()
@@ -85,8 +94,30 @@ if generate_network:
         source_code = HtmlFile.read()
         components.html(source_code, height=1000, width=1600)
 
+        with st.form(key="form_email"):
+            input_email_address = st.text_input('Email address:')
+            input_email_name = st.text_input('Name (optional)')
+            send_network_email = st.form_submit_button(
+                'Send Your Music Network',
+                #disabled=(input_email_address=="")
+            )
+
     except Exception as e:
         print(e)
+
+    if send_network_email and not input_email_address == "":
+        try:
+            file_name = "music_net.html"
+            new_name = str(time.time()) + ''.join(random.choice(string.ascii_uppercase) for _ in range(6)) + "_"+file_name
+            s3_url = uploadS3(file_name, new_name)
+            sendEmail2(s3_url, input_email_address,
+                       f"{input_email_name}, here is your music network!")
+
+            st.text("Your music network has been sent!")
+
+        except Exception as e:
+            print(e)
+            st.text("Sorry for the inconveniences, this functionality is currently not available")
 
 
 # ---*--- Streamlit WebApp Footer ---*---
