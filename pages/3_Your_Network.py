@@ -1,7 +1,6 @@
 import os
 import streamlit.components.v1 as components
 import streamlit as st
-from dotenv import load_dotenv
 from pyvis.network import Network
 from src.ui import *
 from src.s3 import *
@@ -87,8 +86,8 @@ if st.session_state.keep_graphics:
                              title="Artist - " + artist_name)
                 net.add_edge(album_id, artist_id)
 
-        #net.show("music_net.html")
-        #net.show_buttons(filter_=['physics'])
+        net.show("music_net.html", notebook=False)
+        net.show_buttons(filter_=['physics'])
 
         HtmlFile = open("music_net.html", 'r', encoding='utf-8')
         source_code = HtmlFile.read()
