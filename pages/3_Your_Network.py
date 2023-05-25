@@ -65,29 +65,42 @@ if st.session_state.keep_graphics:
 
     try:
         net = Network(height="1000px", width="1600px", font_color="black")
-        net.barnes_hut()
+        net.repulsion(node_distance=165, central_gravity=0.05,
+                      spring_length=200, spring_strength=0.155,
+                      damping=0.14)
         for track in tracks:
             track_id = track.get("id")
             track_name = track.get("name")
-            net.add_node(track_id, label=track_name, group="track", color="#FFC300",
-                         title="Track - " + track_name)
+            net.add_node(track_id, label=track_name, color="#FFC300",
+                         title="Track - " + track_name, value=100)
 
             album = track.get("album")
             album_id = album.get("id")
             album_name = album.get("name")
-            net.add_node(album_id, label=album_name, group="album", color="#FF5733",
-                         title="Album - " + album_name, value=400)
+            net.add_node(album_id, label=album_name, color="#FF5733",
+                         title="Album - " + album_name, value=100)
             net.add_edge(track_id, album_id)
             artists = track.get("artists")
+            user_artists = []
             for artist in artists:
                 artist_id = artist.get("id")
+                user_artists.append(artist_id)
                 artist_name = artist.get("name")
-                net.add_node(artist_id, label=artist_name, group="artist", color="#DAF7A6",
-                             title="Artist - " + artist_name)
+                net.add_node(artist_id, label=artist_name, color="#DAF7A6",
+                             title="Artist - " + artist_name, value=100)
                 net.add_edge(album_id, artist_id)
 
+                related_artists = st.session_state.spotify.artist_related_artists(artist_id)["artists"]
+                for related_artist in related_artists[:5]:
+                    related_artist_id = related_artist.get("id")
+                    related_artist_name = related_artist.get("name")
+                    if related_artist_id not in user_artists:
+                        net.add_node(related_artist_id, label=related_artist_name, color="#e0f5ba",
+                                     title="Related Artist - " + related_artist_name, value=30)
+
+                    net.add_edge(artist_id, related_artist_id)
+
         net.show("music_net.html")
-        net.show_buttons(filter_=['physics'])
 
         HtmlFile = open("music_net.html", 'r', encoding='utf-8')
         source_code = HtmlFile.read()
