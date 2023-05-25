@@ -86,7 +86,7 @@ if st.session_state.keep_graphics:
                              title="Artist - " + artist_name)
                 net.add_edge(album_id, artist_id)
 
-        net.show("music_net.html", notebook=False)
+        net.show("music_net.html")
         net.show_buttons(filter_=['physics'])
 
         HtmlFile = open("music_net.html", 'r', encoding='utf-8')
@@ -104,20 +104,22 @@ if st.session_state.keep_graphics:
     except Exception as e:
         print(e)
 
-    if send_network_email and not input_email_address == "":
-        try:
-            file_name = "music_net.html"
-            new_name = str(time.time()) + ''.join(random.choice(string.ascii_uppercase) for _ in range(6)) + "_"+file_name
-            s3_url = uploadS3(file_name, new_name)
-            sendEmail2(s3_url, input_email_address,
-                       f"{input_email_name}, here is your music network!")
+    try:
+        if send_network_email and not input_email_address == "":
+            try:
+                file_name = "music_net.html"
+                new_name = str(time.time()) + ''.join(random.choice(string.ascii_uppercase) for _ in range(6)) + "_"+file_name
+                s3_url = uploadS3(file_name, new_name)
+                sendEmail2(s3_url, input_email_address,
+                           f"{input_email_name}, here is your music network!")
 
-            st.text("Your music network has been sent!")
+                st.text("Your music network has been sent!")
 
-        except Exception as e:
-            print(e)
-            st.text("Sorry for the inconveniences, this functionality is currently not available")
-
+            except Exception as e:
+                print(e)
+                st.text("Sorry for the inconveniences, this functionality is currently not available")
+    except Exception as e:
+        print(e)
 
 # ---*--- Streamlit WebApp Footer ---*---
 st.markdown("---")
