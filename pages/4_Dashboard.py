@@ -6,13 +6,13 @@ import altair as alt
 from collections import Counter
 import matplotlib.pyplot as plt
 import seaborn as sns
-#from src.ui import *
+from src.ui import *
 
 # ---*--- Streamlit WebApp Header ---*---
 st.set_page_config(
     page_title="Spotify WebApp Mini Demo", page_icon="💥", layout="wide"
 )
-st.image("src/img/home_banner.png")
+sidebar()
 
 st.markdown('# Daily Top 10 - Spain')
 
@@ -53,6 +53,8 @@ with col1:
     dfs = pd.read_html('https://kworb.net/spotify/country/es_daily.html')
     df_streamings = dfs[0][['Artist and Title','Streams']].head(10)
     df_streamings['Artist and Title'] = df_streamings['Artist and Title'].apply(lambda x: (x.split(' - ')[1]).split(" (")[0])
+    
+    fig1 = plt.subplots(1)
     plot1 = sns.barplot(x='Streams',y="Artist and Title", data=df_streamings, palette=palette)
     plot1.set_ylabel('')
     plot1.tick_params( colors='green')
@@ -111,7 +113,9 @@ with col2:
 # ))
 
 # OPTION 4
-    plot = sns.countplot(y='genres',data=source,order=source['genres'].value_counts().index[:10])
+    fig = plt.subplots(1)
+    plot = sns.countplot(y='genres',data=source,order=source['genres'].value_counts().index[:10], palette=palette)
+    plot.tick_params( colors='green')
     fig = plot.get_figure()
     st.pyplot(fig, transparent = True)
 
