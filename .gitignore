@@ -12,3 +12,4 @@ venv
 
 # network html
 music_net.html
+__pycache__
