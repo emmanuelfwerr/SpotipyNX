@@ -16,10 +16,10 @@ st.set_page_config(
 add_logo()
 sidebar()
 
-st.markdown('# Daily Top 10 - Spain')
+st.header('Daily Top 10 - Spain')
 
 # Row A
-st.markdown('## Most popular songs')
+st.markdown("### Most popular songs")
 lz_uri = '37i9dQZEVXbNFJfN1Vw8d9'
 spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
 results = spotify.playlist_items(lz_uri,fields='items,uri,name,id,total', market='us')
@@ -51,7 +51,7 @@ col1, col2 = st.columns(2)
 
 # Col 1
 with col1:
-    st.markdown('### Streamings')  
+    st.markdown("### Daily Streams")
     dfs = pd.read_html('https://kworb.net/spotify/country/es_daily.html')
     df_streamings = dfs[0][['Artist and Title','Streams']].head(10)
     df_streamings['Artist and Title'] = df_streamings['Artist and Title'].apply(lambda x: (x.split(' - ')[1]).split(" (")[0])
@@ -65,7 +65,7 @@ with col1:
 
 #  Col2
 with col2:
-    st.markdown('### Genres')    
+    st.markdown("### Top Daily Genres")  
     list = []
     for idx,track in enumerate(results['items'][:10]):
         for artist in track['track']['artists']:
