@@ -18,6 +18,8 @@ st.image("src/img/home_banner_v4.jpeg")
 # ---*--- Init Session State ---*---
 if "spotify_oauth" not in st.session_state:
     st.session_state.spotify_oauth = False
+if "send_network_email" not in st.session_state:
+    st.session_state.send_network_email = False
 if "liked_songs_df" not in st.session_state:
     st.session_state.liked_songs_df = pd.DataFrame()
 if "top_songs_df" not in st.session_state:
