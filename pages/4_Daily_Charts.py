@@ -8,10 +8,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from src.ui import *
 
+
 # ---*--- Streamlit WebApp Header ---*---
 st.set_page_config(
     page_title="Spotify WebApp Mini Demo", page_icon="💥", layout="wide"
 )
+add_logo()
 sidebar()
 
 st.markdown('# Daily Top 10 - Spain')
