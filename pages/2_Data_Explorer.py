@@ -10,37 +10,45 @@ st.set_page_config(
 add_logo()
 sidebar()
 
-# ---*--- Liked Songs Raw DataFrame ---*---
-st.markdown("<h3 style='text-align: center;'>Recent Liked Songs Raw DataFrame</h3>", unsafe_allow_html=True)
-liked_songs_df = st.session_state.liked_songs_df
-st.dataframe(liked_songs_df)
+st.header('Data Explorer')
 
-# enable download
-liked_songs_csv = convert_df(liked_songs_df)
+if st.session_state.spotify_oauth:
 
-st.download_button(
-   "Download Liked Songs DataFrame",
-   liked_songs_csv,
-   "liked_songs.csv",
-   "text/csv",
-   key='download-liked-songs-csv'
-)
+    # ---*--- Liked Songs Raw DataFrame ---*---
+    st.markdown("<h3 style='text-align: center;'>Recent Liked Songs Raw DataFrame</h3>", unsafe_allow_html=True)
+    liked_songs_df = st.session_state.liked_songs_df
+    st.dataframe(liked_songs_df)
 
-# ---*--- Top Songs Raw DataFrame ---*---
-st.markdown("<h3 style='text-align: center;'>Current Top Songs Raw DataFrame</h3>", unsafe_allow_html=True)
-top_songs_df = st.session_state.top_songs_df
-st.dataframe(top_songs_df)
+    # enable download
+    liked_songs_csv = convert_df(liked_songs_df)
 
-# enable download
-top_songs_csv = convert_df(top_songs_df)
+    st.download_button(
+    "Download Liked Songs DataFrame",
+    liked_songs_csv,
+    "liked_songs.csv",
+    "text/csv",
+    key='download-liked-songs-csv'
+    )
 
-st.download_button(
-   "Download Top Songs DataFrame",
-   top_songs_csv,
-   "top_songs.csv",
-   "text/csv",
-   key='download-top-songs-csv'
-)
+    # ---*--- Top Songs Raw DataFrame ---*---
+    st.markdown("<h3 style='text-align: center;'>Current Top Songs Raw DataFrame</h3>", unsafe_allow_html=True)
+    top_songs_df = st.session_state.top_songs_df
+    st.dataframe(top_songs_df)
+
+    # enable download
+    top_songs_csv = convert_df(top_songs_df)
+
+    st.download_button(
+    "Download Top Songs DataFrame",
+    top_songs_csv,
+    "top_songs.csv",
+    "text/csv",
+    key='download-top-songs-csv'
+    )
+
+else:
+
+    st.info('You Must Perform Spotify OAuth Before Using This Feature!', icon="ℹ️")
 
 
 # ---*--- Streamlit WebApp Footer ---*---
