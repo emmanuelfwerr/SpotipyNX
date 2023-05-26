@@ -16,17 +16,24 @@ st.set_page_config(
 add_logo()
 sidebar()
 
-st.header('Generate and Interact with Your Spotify Music Network')
+st.header('Generate and Interact With Your Spotify Music Network')
 
 if not "keep_graphics" in st.session_state:
     st.session_state.keep_graphics = False
+if "network_already_generated" not in st.session_state:
+    st.session_state.network_already_generated = False
+if "send_network_email" not in st.session_state:
+    st.session_state.send_network_email = False
 
-generate_network = st.button('Build Your Music Network')
+if not st.session_state.spotify_oauth:
+    st.info('You Must Perform Spotify OAuth Before Using This Feature!', icon="ℹ️")
 
-if generate_network:
-    st.session_state.keep_graphics = True # este hack esta bastante chetao para que no refresque toda
+if st.session_state.spotify_oauth:
+    generate_network = st.button('Build Your Music Network')
+    if generate_network:
+        st.session_state.keep_graphics = True # este hack esta bastante chetao para que no refresque toda
 
-if st.session_state.keep_graphics:
+if st.session_state.keep_graphics and st.session_state.spotify_oauth and not st.session_state.network_already_generated:
     try:
         top_tracks_results = st.session_state.spotify.current_user_top_tracks(
             limit=169, offset=0, time_range='medium_term'
@@ -66,7 +73,7 @@ if st.session_state.keep_graphics:
         print(e)
 
     try:
-        net = Network(height="1000px", width="1600px", font_color="black")
+        net = Network(height="1000px", width="1460px", font_color="black")
         net.repulsion(node_distance=165, central_gravity=0.05,
                       spring_length=200, spring_strength=0.155,
                       damping=0.14)
@@ -106,12 +113,14 @@ if st.session_state.keep_graphics:
 
         HtmlFile = open("music_net.html", 'r', encoding='utf-8')
         source_code = HtmlFile.read()
-        components.html(source_code, height=1000, width=1600)
+        components.html(source_code, height=1000, width=1460)
+
+        st.session_state.network_already_generated = True
 
         with st.form(key="form_email"):
             input_email_address = st.text_input('Email address:')
             input_email_name = st.text_input('Name (optional)')
-            send_network_email = st.form_submit_button(
+            st.session_state.send_network_email = st.form_submit_button(
                 'Send Your Music Network',
                 #disabled=(input_email_address=="")
             )
@@ -120,7 +129,7 @@ if st.session_state.keep_graphics:
         print(e)
 
     try:
-        if send_network_email and not input_email_address == "":
+        if st.session_state.send_network_email and not input_email_address == "":
             try:
                 file_name = "music_net.html"
                 new_name = str(time.time()) + ''.join(random.choice(string.ascii_uppercase) for _ in range(6)) + "_"+file_name
@@ -135,6 +144,43 @@ if st.session_state.keep_graphics:
                 st.text("Sorry for the inconveniences, this functionality is currently not available")
     except Exception as e:
         print(e)
+
+
+elif st.session_state.network_already_generated:
+    try:
+        HtmlFile = open("music_net.html", 'r', encoding='utf-8')
+        source_code = HtmlFile.read()
+        components.html(source_code, height=1000, width=1460)
+
+        with st.form(key="form_email"):
+            input_email_address = st.text_input('Email address:')
+            input_email_name = st.text_input('Name (optional)')
+            st.session_state.send_network_email = st.form_submit_button(
+                'Send Your Music Network',
+                #disabled=(input_email_address=="")
+            )
+
+    except Exception as e:
+        print(e)
+
+    try:
+        if st.session_state.send_network_email and not input_email_address == "":
+            try:
+                file_name = "music_net.html"
+                new_name = str(time.time()) + ''.join(random.choice(string.ascii_uppercase) for _ in range(6)) + "_"+file_name
+                s3_url = uploadS3(file_name, new_name)
+                sendEmail2(s3_url, input_email_address,
+                           f"{input_email_name}, here is your music network!")
+
+                st.text("Your music network has been sent!")
+
+            except Exception as e:
+                print(e)
+                st.text("Sorry for the inconveniences, this functionality is currently not available")
+    except Exception as e:
+        print(e)
+
+
 
 # ---*--- Streamlit WebApp Footer ---*---
 st.markdown("---")
