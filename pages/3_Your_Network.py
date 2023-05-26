@@ -16,6 +16,8 @@ st.set_page_config(
 add_logo()
 sidebar()
 
+st.header('Generate and Interact with Your Spotify Music Network')
+
 if not "keep_graphics" in st.session_state:
     st.session_state.keep_graphics = False
 
