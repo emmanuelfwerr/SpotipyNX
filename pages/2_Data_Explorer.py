@@ -11,7 +11,7 @@ add_logo()
 sidebar()
 
 # ---*--- Liked Songs Raw DataFrame ---*---
-st.markdown("<h3 style='text-align: center; color: white;'>Recent Liked Songs Raw DataFrame</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center;'>Recent Liked Songs Raw DataFrame</h3>", unsafe_allow_html=True)
 liked_songs_df = st.session_state.liked_songs_df
 st.dataframe(liked_songs_df)
 
@@ -27,7 +27,7 @@ st.download_button(
 )
 
 # ---*--- Top Songs Raw DataFrame ---*---
-st.markdown("<h3 style='text-align: center; color: white;'>Current Top Songs Raw DataFrame</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center;'>Current Top Songs Raw DataFrame</h3>", unsafe_allow_html=True)
 top_songs_df = st.session_state.top_songs_df
 st.dataframe(top_songs_df)
 

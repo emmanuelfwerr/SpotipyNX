@@ -33,15 +33,15 @@ sidebar()
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col2:
-   st.markdown("<h3 style='text-align: center; color: white;'>Explore Stats</h3>", unsafe_allow_html=True)
+   st.markdown("<h3 style='text-align: center;'>Explore Stats</h3>", unsafe_allow_html=True)
    st.image("./src/img/explorer_feature.png")
 
 with col3:
-   st.markdown("<h3 style='text-align: center; color: white;'>Generate Networks</h3>", unsafe_allow_html=True)
+   st.markdown("<h3 style='text-align: center;'>Generate Networks</h3>", unsafe_allow_html=True)
    st.image("./src/img/graph_feature.png")
 
 with col4:
-   st.markdown("<h3 style='text-align: center; color: white;'>Download Tables</h3>", unsafe_allow_html=True)
+   st.markdown("<h3 style='text-align: center;'>Download Tables</h3>", unsafe_allow_html=True)
    st.image("./src/img/download_feature.png")
 
 
