@@ -69,48 +69,11 @@ with col2:
         for artist in track['track']['artists']:
             genres = spotify.artist(artist['uri'])['genres']
             list.extend(genres)
-            
-# OPTION 1
-# fig, ax = plt.subplots()
-# ax.hist(list, bins=20, orientation="horizontal")
-# st.pyplot(fig)
-
-# OPTION 2
-# map = Counter(list)
-# df_g = pd.DataFrame(
-#         columns=[
-#             "Genres", 
-#             "Counter"
-#         ])
-# idx = 0
-# for key, value in map.items():
-#     df_g.loc[idx,"Genres"] = key
-#     df_g.loc[idx,"Counter"] = value
-#     idx = idx + 1
-
-# st.bar_chart( pd.DataFrame.listfrom_dict(map,orient='index',columns=['Count']))
-# fig, ax = plt.subplots()
-# ax.hist(df_g, bins=20, orientation="horizontal")
-# st.pyplot(fig)
 
 
     source = pd.DataFrame(
         {'genres': list}
     )
-# OPTION 3
-
-# st.write(alt.Chart(source).transform_aggregate(
-#     count='count()',
-#     groupby=['genres']
-# ).transform_window(
-#     rank='rank(count)',
-#     sort=[alt.SortField('count', order='descending')]
-# ).transform_filter(
-#     alt.datum.rank < 10
-# ).mark_bar().encode(
-#     y=alt.Y('genres:N', sort='-x'),
-#     x='count:Q',
-# ))
 
 # OPTION 4
     fig = plt.subplots(1)
