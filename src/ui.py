@@ -1,9 +1,11 @@
+import os
 import time
 import streamlit as st
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import streamlit as st
 from src.funcs import *
+
 
 def display_banner():
     st.image("img/home_banner.png")
@@ -39,6 +41,14 @@ def sidebar():
             try:
                 # ---*--- Trigger Spotify OAuth ---*---
                 scope = ["user-library-read", "user-top-read", "user-read-recently-played"]
+
+                # ---*--- Fix .cache inside Docker ---*---
+                '''cache_dir = '.cache'
+                if not os.path.exists(cache_dir):
+                    os.makedirs(cache_dir)
+                os.chmod(cache_dir, 0o700)'''
+
+                # ---*---  ---*---
                 st.session_state.spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
                 liked_tracks_results = st.session_state.spotify.current_user_saved_tracks()
