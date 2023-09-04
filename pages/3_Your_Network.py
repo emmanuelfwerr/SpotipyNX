@@ -11,7 +11,7 @@ import random
 
 # ---*--- Streamlit WebApp Header ---*---
 st.set_page_config(
-    page_title="Spotify WebApp Mini Demo", page_icon="💥", layout="wide"
+    page_title="SpotipyNX", page_icon="💥", layout="wide"
 )
 add_logo()
 sidebar()
@@ -73,7 +73,7 @@ if st.session_state.keep_graphics and st.session_state.spotify_oauth and not st.
         print(e)
 
     try:
-        net = Network(height="1000px", width="1460px", font_color="black")
+        net = Network(height="1000px", width="1000px", font_color="black")
         net.repulsion(node_distance=165, central_gravity=0.05,
                       spring_length=200, spring_strength=0.155,
                       damping=0.14)
@@ -113,7 +113,7 @@ if st.session_state.keep_graphics and st.session_state.spotify_oauth and not st.
 
         HtmlFile = open("music_net.html", 'r', encoding='utf-8')
         source_code = HtmlFile.read()
-        components.html(source_code, height=1000, width=1460)
+        components.html(source_code, height=1000, width=1000)
 
         st.session_state.network_already_generated = True
 

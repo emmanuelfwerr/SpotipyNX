@@ -2,7 +2,7 @@ import os
 import time
 import streamlit as st
 import spotipy
-from spotipy.oauth2 import SpotifyOAuth
+from spotipy.oauth2 import SpotifyPKCE
 import streamlit as st
 from src.funcs import *
 
@@ -49,7 +49,7 @@ def sidebar():
                 os.chmod(cache_dir, 0o700)'''
 
                 # ---*---  ---*---
-                st.session_state.spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+                st.session_state.spotify = spotipy.Spotify(auth_manager=SpotifyPKCE(scope=scope))
 
                 liked_tracks_results = st.session_state.spotify.current_user_saved_tracks()
                 top_tracks_results = st.session_state.spotify.current_user_top_tracks()

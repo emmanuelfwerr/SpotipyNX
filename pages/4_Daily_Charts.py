@@ -11,7 +11,7 @@ from src.ui import *
 
 # ---*--- Streamlit WebApp Header ---*---
 st.set_page_config(
-    page_title="Spotify WebApp Mini Demo", page_icon="💥", layout="wide"
+    page_title="SpotipyNX", page_icon="💥", layout="wide"
 )
 add_logo()
 sidebar()
